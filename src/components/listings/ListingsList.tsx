@@ -9,6 +9,7 @@ import {
 import { Listing } from "@/types";
 import ListingCard from "./ListingCard";
 import { useRouter } from "next/navigation";
+import { QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
 
 export default function ListingsList() {
   const router = useRouter();
@@ -22,7 +23,7 @@ export default function ListingsList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
-  const [lastDoc, setLastDoc] = useState<any>(null);
+  const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot<DocumentData> | undefined>(undefined);
   const [isSearchMode, setIsSearchMode] = useState(false);
 
   // Filter state
@@ -58,7 +59,7 @@ export default function ListingsList() {
       if (reset) {
         setLoading(true);
         setCurrentPage(1);
-        setLastDoc(null);
+        setLastDoc(undefined);
         setHasMore(true);
         setIsSearchMode(false);
       } else {
@@ -67,7 +68,7 @@ export default function ListingsList() {
 
       const result = await getListingsWithPagination(
         ITEMS_PER_PAGE,
-        reset ? null : lastDoc
+        reset ? undefined : lastDoc
       );
 
       if (reset) {
@@ -76,7 +77,7 @@ export default function ListingsList() {
         setListings((prev) => [...prev, ...result.listings]);
       }
 
-      setLastDoc(result.lastDoc);
+      setLastDoc(result.lastDoc || undefined);
       setHasMore(result.listings.length === ITEMS_PER_PAGE);
     } catch (error) {
       console.error("Error loading listings:", error);
@@ -96,7 +97,7 @@ export default function ListingsList() {
     try {
       setSearching(true);
       setCurrentPage(1);
-      setLastDoc(null);
+              setLastDoc(undefined);
       setHasMore(true);
       setIsSearchMode(true);
 
@@ -300,7 +301,7 @@ export default function ListingsList() {
                 d="M5 13l4 4L19 7"
               />
             </svg>
-            You've reached the end of all listings
+            You&apos;ve reached the end of all listings
           </div>
         </div>
       )}

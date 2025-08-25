@@ -57,8 +57,8 @@ export default function CreateListingForm() {
         router.push('/');
       }, 1500);
 
-    } catch (error: any) {
-      setError(error.message || 'Failed to create listing');
+    } catch (error: unknown) {
+      setError(error instanceof Error ? error.message : 'Failed to create listing');
     } finally {
       setLoading(false);
     }

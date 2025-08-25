@@ -75,7 +75,7 @@ export default function Home() {
                 Getting Started
               </h2>
               <p className="text-gray-600 text-lg">
-                You're now logged in and ready to explore listings or create
+                You&apos;re now logged in and ready to explore listings or create
                 your own!
               </p>
             </div>
